@@ -1,0 +1,82 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUpFragment"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/emailInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:layout_marginTop="16dp"/>
+
+    <EditText
+        android:id="@+id/usernameInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Username"
+        android:layout_below="@id/emailInput"
+        android:layout_marginTop="8dp"/>
+
+    <EditText
+        android:id="@+id/dobInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Date of Birth (YYYY-MM-DD)"
+        android:inputType="date"
+        android:layout_below="@id/usernameInput"
+        android:layout_marginTop="8dp"/>
+
+    <EditText
+        android:id="@+id/addressInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Address"
+        android:inputType="textPostalAddress"
+        android:layout_below="@id/dobInput"
+        android:layout_marginTop="8dp"/>
+
+    <EditText
+        android:id="@+id/phoneInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Phone Number (+12345678910)"
+        android:inputType="phone"
+        android:layout_below="@id/addressInput"
+        android:layout_marginTop="8dp"/>
+
+    <EditText
+        android:id="@+id/passwordInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:layout_below="@id/phoneInput"
+        android:layout_marginTop="8dp"/>
+
+    <!-- TextView for password requirements -->
+    <TextView
+        android:id="@+id/passwordRequirements"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\u2022 Be at least 8 characters\n\u2022 At least one lowercase\n\u2022 At least one uppercase\n\u2022 At least one number\n\u2022 At least one special character"
+        android:layout_below="@id/passwordInput"
+        android:textSize="14sp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:textColor="#6D6D6D"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/SignUpButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign Up"
+        android:layout_below="@id/passwordRequirements"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="16dp"/>
+
+</RelativeLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Jordan's Code-->
+    <color name="purple2">#FFBB86FC</color>
+    <color name="purple5">#FF6200EE</color>
+    <color name="purple7">#FF3700B3</color>
+    <color name="teal2">#FF03DAC5</color>
+    <color name="teal7">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="lavender">#8692F7</color>
+    <color name="grey">#888</color>
+    <color name="yellow">#ECBD08</color>
+    <color name="blue">#0000FF</color>
+
+    <!--Khaled's Code-->
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+</resources>

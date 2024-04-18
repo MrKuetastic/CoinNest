@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/editTextBillName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Bill Name"
+        android:autofillHints="" />
+
+    <EditText
+        android:id="@+id/editTextAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:hint="Amount" />
+
+    <EditText
+        android:id="@+id/editTextDueDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select a Date" />
+
+    <EditText
+        android:id="@+id/editTextBillCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="Category"/>
+
+    <Button
+        android:id="@+id/buttonAddBill"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Bill" />
+
+</LinearLayout>
