@@ -18,6 +18,8 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +33,9 @@ public class Database {
     private Context context;
     private static Database instance;
     protected RequestQueue queue;
+
+    private Map<String, List<Bill>> dailyBillsCache = new HashMap<>();
+    private Map<String, List<Bill>> monthlyBillsCache = new HashMap<>();
 
     private static final String LOGIN_URL = "http://18.189.7.172/login.php";
     private static final String SignUp_URL = "http://18.189.7.172/signup.php";
@@ -76,24 +81,25 @@ public class Database {
         if (date == null) {
             throw new IllegalArgumentException("The date to format cannot be null.");
         }
-        DateTimeFormatter formatter = null;
-        formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
         return date.format(formatter);
     }
 
     //fenzhang: tool api for formatting the date to pull bills
     public static String formatToLocalDate(LocalDate date) {
-
         if (date == null) {
             throw new IllegalArgumentException("The date to format cannot be null.");
         }
-        DateTimeFormatter formatter = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        }
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return date.format(formatter);
+    }
 
+    public static String formatToLocalDatebyYearMonth(LocalDate date) {
+        if (date == null) {
+            throw new IllegalArgumentException("The date to format cannot be null.");
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        return date.format(formatter);
     }
 
     // Method for login authorization
@@ -223,14 +229,43 @@ public class Database {
     }
 
 
-    private void cacheBills(List<Bill> bills) {
-        Gson gson = new Gson();
-        String jsonData = gson.toJson(bills);
-        try (FileOutputStream fos = context.openFileOutput(CACHE_FILE_NAME, Context.MODE_PRIVATE)) {
-            fos.write(jsonData.getBytes());
-            Log.d("cacheBills", "Data successfully cached.");
-        } catch (IOException e) {
-            Log.e("cacheBills", "Error writing to cache", e);
+    // Cache bills
+    public void cacheBills(List<Bill> bills) {
+        for (Bill bill : bills) {
+            cacheBillByDate(bill);
+            cacheBillByMonth(bill);
+        }
+    }
+
+    private void cacheBillByDate(Bill bill) {
+        String dateKey = bill.getDueDate();  // "YYYY-MM-DD"
+        dailyBillsCache.computeIfAbsent(dateKey, k -> new ArrayList<>()).add(bill);
+    }
+
+    private void cacheBillByMonth(Bill bill) {
+        String monthKey = bill.getDueDate().substring(0, 7);  // "YYYY-MM"
+        monthlyBillsCache.computeIfAbsent(monthKey, k -> new ArrayList<>()).add(bill);
+    }
+
+    // Read bills by date
+    public List<Bill> readBillsFromCacheByDate(String date) {
+        return dailyBillsCache.getOrDefault(date, new ArrayList<>());
+    }
+
+    // Read bills by month
+    public List<Bill> readBillsFromCacheByMonth(String month) {
+        return monthlyBillsCache.getOrDefault(month, new ArrayList<>());
+    }
+
+    // Fetch bills by date from the cache
+    private void fetchFromCacheByDate(final String date, final MySQLAccessResponseListener listener) {
+        List<Bill> cachedBills = readBillsFromCacheByDate(date);
+        if (cachedBills == null || cachedBills.isEmpty()) {
+            listener.onError("No cached data available for date: " + date);
+        } else {
+            Gson gson = new Gson();
+            String billsJson = gson.toJson(cachedBills);
+            listener.onResponse(billsJson);
         }
     }
 
@@ -256,6 +291,105 @@ public class Database {
             return null;
         }
     }
+
+
+    //sum month bill by day into an array
+    // Method to calculate totals per day and return them as strings in a list
+    public static List<String> calculateTotalPerDayAsString(List<Bill> bills) {
+        List<String> dayTotalsAsString = new ArrayList<>();
+
+        if (bills == null || bills.isEmpty()) {
+            return dayTotalsAsString;
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Adjust according to the actual format
+
+        // Group bills by day
+        Map<LocalDate, Double> dailyTotalMap = new HashMap<>();
+        for (Bill bill : bills) {
+            LocalDate dueDate;
+            try {
+                dueDate = LocalDate.parse(bill.getDueDate(), formatter);
+            } catch (DateTimeParseException e) {
+                // Log or handle the error appropriately
+                continue; // Skip this bill if the date is not parseable
+            }
+            double amount = bill.getAmount();
+            dailyTotalMap.merge(dueDate, amount, Double::sum);
+        }
+
+        if (dailyTotalMap.isEmpty()) {
+            // If no bills could be parsed, fill the month with zeros
+            LocalDate today = LocalDate.now();
+            LocalDate firstDayOfMonth = today.withDayOfMonth(1);
+            LocalDate lastDayOfMonth = today.withDayOfMonth(today.getMonth().length(today.isLeapYear()));
+            for (LocalDate currentDate = firstDayOfMonth; !currentDate.isAfter(lastDayOfMonth); currentDate = currentDate.plusDays(1)) {
+                dayTotalsAsString.add(String.format("%s: $0.00", currentDate));
+            }
+            return dayTotalsAsString;
+        }
+
+        // Find the first and last day of the month based on the earliest and latest bill dates
+        LocalDate firstDayOfMonth = dailyTotalMap.keySet().stream().min(LocalDate::compareTo).get().withDayOfMonth(1);
+        LocalDate lastDayOfMonth = dailyTotalMap.keySet().stream().max(LocalDate::compareTo).get().withDayOfMonth(firstDayOfMonth.getMonth().length(firstDayOfMonth.isLeapYear()));
+
+        // Fill day totals for each day in the month, including days with no bills
+        for (LocalDate currentDate = firstDayOfMonth; !currentDate.isAfter(lastDayOfMonth); currentDate = currentDate.plusDays(1)) {
+            double total = dailyTotalMap.getOrDefault(currentDate, 0.0);
+            dayTotalsAsString.add(String.format("%s: $%.2f", currentDate, total));
+        }
+
+        return dayTotalsAsString;
+    }
+
+    public static List<Bill> parseBillsFromResponse(String jsonResponse) {
+        Gson gson = new Gson();
+        Type billListType = new TypeToken<List<Bill>>(){}.getType();
+        return gson.fromJson(jsonResponse, billListType);
+    }
+
+    public void fetchBillsByMonth(final String month, final boolean forceUpdate, final MySQLAccessResponseListener listener) {
+        if (forceUpdate) {
+            fetchFromServerByMonth(month, listener);
+        } else {
+            fetchFromCacheByMonth(month, listener);
+        }
+    }
+
+    private void fetchFromServerByMonth(final String month, final MySQLAccessResponseListener listener) {
+        String urlWithParams = bills_url + "?month=" + month;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, urlWithParams,
+                response -> {
+                    try {
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<List<Bill>>(){}.getType();
+                        List<Bill> bills = gson.fromJson(response, listType);
+//                        cacheBills(bills);
+                        String billsJson = gson.toJson(bills);
+                        listener.onResponse(billsJson);
+                    } catch (Exception e) {
+                        listener.onError("Parsing error: " + e.getMessage());
+                    }
+                },
+                error -> listener.onError("Request error: " + error.toString()));
+
+        queue.add(stringRequest);
+    }
+
+    private void fetchFromCacheByMonth(final String month, final MySQLAccessResponseListener listener) {
+        List<Bill> cachedBills = readBillsFromCacheByMonth(month);
+        if (cachedBills == null || cachedBills.isEmpty()) {
+            listener.onError("No cached data available for month: " + month);
+        } else {
+            Gson gson = new Gson();
+            String billsJson = gson.toJson(cachedBills);
+            listener.onResponse(billsJson);
+        }
+    }
+
+
+
 
     // Placeholder for the method to fetch summary
     public void fetchSummary(final String someParameter, final MySQLAccessResponseListener listener) {

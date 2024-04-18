@@ -1,3 +1,63 @@
+<!--<resources>-->
+<!--    <string name="app_name">CoinNest</string>-->
+<!--    &lt;!&ndash; TODO: Remove or change this placeholder text &ndash;&gt;-->
+<!--    &lt;!&ndash;Jordan's Code&ndash;&gt;-->
+<!--    <string name='hello_blank_fragment'>Hello blank fragment</string>-->
+<!--    <string name='library'>Library</string>-->
+<!--    <string name='shorts'>Shorts</string>-->
+<!--    <string name='subscription'>Subscription</string>-->
+<!--    <string name='home'>Home</string>-->
+<!--    <string name="reports">Reports</string>-->
+<!--    <string name="misc">Misc</string>-->
+<!--    <string name="logo">logo</string>-->
+<!--    <string name="termsOfUse"><![CDATA[Terms of Use:-->
+
+<!--Welcome to Coin Nest! These Terms of Use govern your access to and use of Coin Nest and its services. By accessing or using Coin Nest, you agree to be bound by these terms and conditions. Please read them carefully before using the app.-->
+<!--1. Account Registration-->
+
+<!--When signing up for Coin Nest, you will be required to provide certain personal information, including your name, email, address, date of birth, and password. You agree to provide accurate and complete information and to keep your account information up to date.-->
+
+<!--2. Usage and Access-->
+
+<!--You are solely responsible for maintaining the confidentiality of your account and password and for restricting access to your device. You agree to accept responsibility for all activities that occur under your account.-->
+
+<!--3. Sections of the App-->
+
+<!--Coin Nest consists of four main sections:-->
+
+<!-- - Home Page: Displays your recent transactions.-->
+<!-- - Calendar Page: Features an interactive calendar showing upcoming bill payments and subscription renewals.-->
+<!-- - Bills Page: Allows you to add bills and transactions for analysis and budgeting suggestions.-->
+<!-- - Miscellaneous Page: Includes options for settings, contacting us, rating us, and managing your account.-->
+
+<!--4. Account Management-->
+
+<!--In the "Account" section, you have the ability to update your password and email. You agree to keep your account information accurate and current.-->
+<!--5. Contact Us-->
+
+<!--By using the "Contact Us" feature, you consent to provide us with your name, email, and phone number for communication purposes. We may use this information to respond to your inquiries or provide customer support.-->
+
+<!--6. Data Privacy-->
+
+<!--We respect your privacy and are committed to protecting your personal information. Please refer to our Privacy Policy for information on how we collect, use, and disclose your data.-->
+
+<!--7. Changes to Terms-->
+
+<!--We reserve the right to modify or update these Terms of Use at any time. Any changes will be effective immediately upon posting. It is your responsibility to review these terms periodically for updates.-->
+
+<!--8. Acceptance of Terms-->
+
+<!--By using Coin Nest, you signify your acceptance of these Terms of Use. If you do not agree to these terms, please do not use the app.-->
+
+<!--If you have any questions or concerns about these terms, please contact us at gv6117@wayne.edu.-->
+
+<!--Last updated: [04/16/2024]</p>]]></string>-->
+
+
+
+<!--</resources>-->
+
+
 <resources>
     <string name="app_name">CoinNest</string>
     <!-- TODO: Remove or change this placeholder text -->

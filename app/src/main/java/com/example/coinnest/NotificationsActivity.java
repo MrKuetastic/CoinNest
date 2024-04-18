@@ -7,6 +7,10 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.coinnest.R;
+
 public class NotificationsActivity extends AppCompatActivity {
 
     @Override
