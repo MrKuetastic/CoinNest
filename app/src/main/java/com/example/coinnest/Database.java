@@ -26,6 +26,33 @@ import java.util.Map;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import android.content.Context;
+import android.os.Build;
+import android.util.Log;
+
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.io.FileOutputStream;
+import java.io.IOException;
 public class Database {
 
     private static final String CACHE_FILE_NAME = "bills_cache.json";
@@ -150,6 +177,18 @@ public class Database {
     }
 
     // Method for logout
+//    public void logOut(final MySQLAccessResponseListener listener) {
+//        StringRequest stringRequest = new StringRequest(Request.Method.POST, LOGOUT_URL,
+//                response -> listener.onResponse(response),
+//                error -> listener.onError(error.toString())) {
+//            @Override
+//            protected Map<String, String> getParams() {
+//                return null; // No parameters needed for logout
+//            }
+//        };
+//
+//        queue.add(stringRequest);
+//    }
     public void logOut(final MySQLAccessResponseListener listener) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, LOGOUT_URL,
                 response -> listener.onResponse(response),
@@ -158,8 +197,19 @@ public class Database {
             protected Map<String, String> getParams() {
                 return null; // No parameters needed for logout
             }
-        };
 
+        };
+        if (listener != null) {
+            // Handle VolleyError
+            VolleyError error = new VolleyError();
+            NetworkResponse networkResponse = error.networkResponse;
+            String errorMessage = "Error: " + error.getMessage();
+            if (networkResponse != null && networkResponse.data != null) {
+                String responseBody = new String(networkResponse.data);
+                errorMessage += "\n\nServer Response: " + responseBody;
+            }
+            listener.onError(errorMessage);
+        }
         queue.add(stringRequest);
     }
 

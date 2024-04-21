@@ -94,7 +94,7 @@ public class MiscFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_misc, container, false);
         ListView listView = rootView.findViewById(R.id.myListView);
-        String[] names = {"Setting", "Contact Us", "Rate Us", "Account"};
+        String[] names = { "Setting", "Contact Us", "Rate Us", "Account"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, names);
         listView.setAdapter(adapter);
 

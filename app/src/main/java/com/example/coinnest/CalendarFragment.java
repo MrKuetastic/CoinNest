@@ -34,6 +34,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class CalendarFragment extends Fragment implements CalendarAdapter.OnItemListener {
 
@@ -96,6 +99,23 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
     }
+
+//    private void setMonthView() { Calendar calendar = Calendar.getInstance(); selectedDate = LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, 1); monthYearText.setText(monthYearFromDate(selectedDate)); ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
+//
+//        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this); RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 7); calendarRecyclerView.setLayoutManager(layoutManager); calendarRecyclerView.setAdapter(calendarAdapter); }
+
+//    private void setMonthView()
+//    {
+//        Calendar calendar = Calendar.getInstance();
+//        SimpleDateFormat monthYearFormat = new SimpleDateFormat("MMM yyyy", Locale.getDefault());
+//        monthYearText.setText(monthYearFormat.format(calendar.getTime()));
+//        ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
+//
+//        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
+//        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
+//        calendarRecyclerView.setLayoutManager(layoutManager);
+//        calendarRecyclerView.setAdapter(calendarAdapter);
+//    }
 
     private ArrayList<String> daysInMonthArray(LocalDate date)
     {

@@ -11,7 +11,7 @@ import com.example.coinnest.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
-    boolean isLoggedIn = true; // You would typically check this against SharedPreferences or a similar persistent state
+    boolean isLoggedIn = false; // You would typically check this against SharedPreferences or a similar persistent state
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new CalendarFragment());
             } else if (itemId == R.id.misc) {
                 replaceFragment(new MiscFragment());
+            } else if (itemId == R.id.fab) {
+                replaceFragment(new BillPageFragment());
             }
             return true;
         });

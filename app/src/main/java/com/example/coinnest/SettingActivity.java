@@ -55,30 +55,37 @@ public class SettingActivity extends AppCompatActivity {
             String selectedItem = adapter.getItem(position);
 
             // Check if the selected item is "Logout"
+//            if ("Logout".equals(selectedItem)) {
+//                // Log out the user
+//                Database database = Database.getInstance(getApplicationContext());
+//                database.logOut(new Database.MySQLAccessResponseListener() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        if ("1".equals(response.trim())) {
+//                            Toast.makeText(SettingActivity.this, "Logout Successful.", Toast.LENGTH_SHORT).show();
+//                            // Start the LoginActivity
+//                            Intent intent = new Intent(SettingActivity.this, LoginFragment.class);
+//                            startActivity(intent);
+//                            finish();
+//                        } else {
+//                            Toast.makeText(SettingActivity.this, "Logout Failed.", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(String message) {
+//                        Toast.makeText(SettingActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//            }
+            // Check if the selected item is "Notification"
             if ("Logout".equals(selectedItem)) {
-                // Log out the user
-                Database database = Database.getInstance(getApplicationContext());
-                database.logOut(new Database.MySQLAccessResponseListener() {
-                    @Override
-                    public void onResponse(String response) {
-                        if ("1".equals(response.trim())) {
-                            Toast.makeText(SettingActivity.this, "Logout Successful.", Toast.LENGTH_SHORT).show();
-                            // Start the LoginActivity
-                            Intent intent = new Intent(SettingActivity.this, LoginFragment.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Toast.makeText(SettingActivity.this, "Logout Failed.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                // Start the Logout
+                Intent intent = new Intent(SettingActivity.this, LoginFragment.class);
+                Toast.makeText(SettingActivity.this, "Logout Successful.", Toast.LENGTH_SHORT).show();
+                startActivity(intent);
 
-                    @Override
-                    public void onError(String message) {
-                        Toast.makeText(SettingActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
-
             // Check if the selected item is "Notification"
             if ("Notification".equals(selectedItem)) {
                 // Start the NotificationsActivity

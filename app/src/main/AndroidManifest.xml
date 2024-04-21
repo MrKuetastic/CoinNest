@@ -34,9 +34,7 @@
             <!-- Optionally specify intent filters here if this activity is a main or launcher activity -->
         </activity>
 
-        <activity
-            android:name=".SettingActivity"
-            android:exported="false" />
+
 
         <!-- ContactUsActivity -->
         <activity
@@ -52,6 +50,16 @@
         <activity
             android:name=".AccountActivity"
             android:exported="false" />
+
+        <activity android:name=".NotificationsActivity" />
+        <activity android:name=".SettingActivity" />
+
+        <activity android:name=".TermsOfUseActivity"/>
+        <activity android:name=".CreditsActivity"/>
+        <activity android:name=".LogoutActivity"/>
+        <activity android:name=".ChangeEmailActivity"/>
+        <activity android:name=".ChangePasswordActivity"/>
+        <!-- Other activities -->
     </application>
 
 </manifest>

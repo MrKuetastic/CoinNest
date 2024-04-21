@@ -13,7 +13,8 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="10.0sp"
         android:scrollbars="vertical"
-        tools:listitem="@layout/list_item_misc" />
+        tools:listitem="@layout/list_item_misc"
+        />
 
 
 </FrameLayout>

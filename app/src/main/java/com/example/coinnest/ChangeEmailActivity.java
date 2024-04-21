@@ -1,6 +1,11 @@
 package com.example.coinnest;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +29,14 @@ public class ChangeEmailActivity extends AppCompatActivity {
             String confirmNewEmail = confirmNewEmailEditText.getText().toString();
 
             if (!newEmail.equals(confirmNewEmail)) {
+                Toast.makeText(this, "New email and confirm new email do not match", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (newEmail.equals(confirmNewEmail)) {
+                Toast.makeText(this, "New email changed", Toast.LENGTH_SHORT).show();
+//                setContentView(R.layout.fragment_misc);
+                //replaceFragment(new MiscFragment());
+            } else {
                 Toast.makeText(this, "New email and confirm new email do not match", Toast.LENGTH_SHORT).show();
                 return;
             }
